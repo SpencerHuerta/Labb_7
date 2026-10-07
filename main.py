@@ -1,31 +1,29 @@
-from csv import reader
+
+from hashtable import Hashtable
+
+def main():
+    hashtable = None
+    
+    while True:
+        line = input()
+        key, *value = line.split()
+        if key == '#':
+            print('#')
+            break
+        elif key == 'init' and len(value) > 0:
+            size = int(value[0])
+            hashtable = Hashtable(size)
+            print('New size:', size)
+        elif len(value) > 0:
+            hashtable.store(key, value[0])
+            print(key, '<-', value[0])
+        else:
+            try:
+                value = hashtable.search(key)
+                print(f'{key}: {value}')
+            except KeyError:
+                print('KeyError:', key)
 
 
-
-class DictHash:
-    def __init__(self):
-        self.d={}
-    def store(self,key,value):
-        self.d[key] = value
-    def __contains__(self, key):
-        return key in self.d
-    def search(self,key):
-        return self.d[key]
-    def __getitem__(self, key):
-        return self.search(key)
-
-
-
-def read_drama():
-    with open('kdrama.csv', newline='') as csvfile:
-        kdrama = reader(csvfile)
-        rubriker = next(kdrama)
-        draman = DictHash()
-        for rad in kdrama:
-            draman.store(rad[0],rad)
-    return draman
-
-draman = read_drama()
-
-print(draman['The Heirs'])
-print('Kalle Anka' in draman)
+if __name__ == "__main__":
+    main()
